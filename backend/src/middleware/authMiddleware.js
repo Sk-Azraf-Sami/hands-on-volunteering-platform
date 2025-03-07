@@ -1,8 +1,10 @@
-const jwt = require('jsonwebtoken');
-require('dotenv').config({path: '../../.env'});
+import jwt from 'jsonwebtoken';
+import dotenv from 'dotenv';
+
+dotenv.config({ path: '../../.env' });
 
 const authMiddleware = (req, res, next) => {
-  const token = req.header('Authorization').replace('Bearer ', '');
+  const token = req.header('Authorization')?.replace('Bearer ', '');
   if (!token) {
     return res.status(401).json({ message: 'No token, authorization denied' });
   }
@@ -15,4 +17,4 @@ const authMiddleware = (req, res, next) => {
   }
 };
 
-module.exports = authMiddleware;
+export default authMiddleware;

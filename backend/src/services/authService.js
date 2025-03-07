@@ -1,16 +1,16 @@
-const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
-const userModel = require('../models/userModel');
+import bcrypt from 'bcryptjs';
+import jwt from 'jsonwebtoken';
+import { createUser, getUserByEmail } from '../models/userModel.js';
 
 const registerUser = async (user) => {
   const { email, password, name, skills, causes } = user;
   const hashedPassword = await bcrypt.hash(password, 10);
-  const newUser = await userModel.createUser({ email, password: hashedPassword, name, skills, causes });
+  const newUser = await createUser({ email, password: hashedPassword, name, skills, causes });
   return newUser;
 };
 
 const loginUser = async (email, password) => {
-  const user = await userModel.getUserByEmail(email);
+  const user = await getUserByEmail(email);
   if (!user) {
     throw new Error('User not found');
   }
@@ -22,7 +22,4 @@ const loginUser = async (email, password) => {
   return { user, token };
 };
 
-module.exports = {
-  registerUser,
-  loginUser,
-};
+export { registerUser, loginUser };
