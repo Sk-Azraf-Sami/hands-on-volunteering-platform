@@ -1,13 +1,15 @@
-const { Pool } = require('pg');
-require('dotenv').config({path: '../../.env'});
+import pkg from 'pg';
+import dotenv from 'dotenv';
 
+dotenv.config();
+
+const { Pool } = pkg;
 /*
 console.log('DB_USER:', process.env.DB_USER);
 console.log('DB_PASSWORD:', process.env.DB_PASSWORD);
 console.log('DB_HOST:', process.env.DB_HOST);
 console.log('DB_NAME:', process.env.DB_NAME);
 */
-
 const pool = new Pool({
   user: process.env.DB_USER,
   host: process.env.DB_HOST,
@@ -25,4 +27,4 @@ pool.query('SELECT NOW()', (err, res) => {
   }
 });
 
-module.exports = pool;
+export { pool };
