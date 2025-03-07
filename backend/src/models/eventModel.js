@@ -1,4 +1,4 @@
-import pool from '../config/db.js';
+import {pool} from '../config/db.js';
 
 const createEvent = async (event) => {
   const { title, description, date, time, location, category } = event;
