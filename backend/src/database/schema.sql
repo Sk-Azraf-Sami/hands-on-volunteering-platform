@@ -8,3 +8,19 @@ CREATE TABLE users (
   skills TEXT,
   causes TEXT
 );
+
+CREATE TABLE events (
+  id SERIAL PRIMARY KEY,
+  title VARCHAR(255) NOT NULL,
+  description TEXT,
+  date DATE NOT NULL,
+  time TIME NOT NULL,
+  location VARCHAR(255),
+  category VARCHAR(255)
+);
+
+CREATE TABLE event_attendees (
+  id SERIAL PRIMARY KEY,
+  event_id INTEGER REFERENCES events(id),
+  user_id INTEGER REFERENCES users(id)
+);
