@@ -1,9 +1,10 @@
 import express from 'express';
 import dotenv from 'dotenv';
 import userRoutes from './routes/userRoutes.js';
+import eventRoutes from './routes/eventRoutes.js'
 
 dotenv.config();
-
+ 
 /*
 console.log('DB_USER:', process.env.DB_USER);
 console.log('DB_PASSWORD:', process.env.DB_PASSWORD);
