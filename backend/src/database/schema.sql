@@ -53,3 +53,11 @@ CREATE TABLE team_members (
   team_id INTEGER REFERENCES teams(id),
   user_id INTEGER REFERENCES users(id)
 );
+
+CREATE TABLE volunteer_hours (
+  id SERIAL PRIMARY KEY,
+  user_id INTEGER REFERENCES users(id),
+  event_id INTEGER REFERENCES events(id),
+  hours_spent INTEGER NOT NULL,
+  verified BOOLEAN NOT NULL
+);
