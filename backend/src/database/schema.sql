@@ -39,3 +39,17 @@ CREATE TABLE comments (
   user_id INTEGER REFERENCES users(id),
   text TEXT NOT NULL
 );
+
+CREATE TABLE teams (
+  id SERIAL PRIMARY KEY,
+  name VARCHAR(255) NOT NULL,
+  description TEXT,
+  is_private BOOLEAN NOT NULL,
+  user_id INTEGER REFERENCES users(id)
+);
+
+CREATE TABLE team_members (
+  id SERIAL PRIMARY KEY,
+  team_id INTEGER REFERENCES teams(id),
+  user_id INTEGER REFERENCES users(id)
+);
