@@ -4,6 +4,7 @@ import userRoutes from './routes/userRoutes.js';
 import eventRoutes from './routes/eventRoutes.js';
 import helpRequestRoutes from './routes/helpRequestRoutes.js';
 import teamRoutes from './routes/teamRoutes.js';
+import volunteerHoursRoutes from './routes/volunteerHoursRoutes.js';
 
 dotenv.config();
 
@@ -15,6 +16,7 @@ app.use('/api/users', userRoutes);
 app.use('/api/events', eventRoutes);
 app.use('/api/help-requests', helpRequestRoutes);
 app.use('/api/teams', teamRoutes);
+app.use('/api/volunteer-hours', volunteerHoursRoutes);
 
 const PORT = process.env.PORT || 5000;
 
