@@ -5,11 +5,12 @@ import eventRoutes from './routes/eventRoutes.js';
 import helpRequestRoutes from './routes/helpRequestRoutes.js';
 import teamRoutes from './routes/teamRoutes.js';
 import volunteerHoursRoutes from './routes/volunteerHoursRoutes.js';
-
+import cors from 'cors';
 dotenv.config();
 
 const app = express();
 
+app.use(cors());
 app.use(express.json());
 
 app.use('/api/users', userRoutes);
