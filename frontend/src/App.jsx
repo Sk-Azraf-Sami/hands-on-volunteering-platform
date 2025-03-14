@@ -1,22 +1,26 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import ProfilePage from './pages/ProfilePage';
+import { Provider } from 'react-redux';
+import store from './store';
+import RegPage from './pages/RegPage';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 
 const App = () => {
   return (
-    <Router>
-      <div className="flex flex-col min-h-screen">
-        <Navbar />
-        <main className="flex-grow">
-          <Routes>
-            <Route path="/profile" element={<ProfilePage />} />
-          </Routes>
-        </main>
-        <Footer />
-      </div>
-    </Router>
+    <Provider store={store}>
+      <Router>
+        <div className="flex flex-col min-h-screen">
+          <Navbar />
+          <main className="flex-grow">
+            <Routes>
+              <Route path="/registration" element={<RegPage />} />
+            </Routes>
+          </main>
+          <Footer />
+        </div>
+      </Router>
+    </Provider>
   );
 };
 
