@@ -14,13 +14,15 @@ const Navbar = () => {
           {token ? (
             <>
               <Link to="/profile" className="text-white mr-4">Profile</Link>
+              <Link to="/help-requests" className="text-white mr-4">Help Requests</Link>
               <Logout />
             </>
           ) : (
             <>
               <Link to="/login" className="text-white mr-4">Login</Link>
               <Link to="/registration" className="text-white mr-4">Registration</Link>
-              <Link to="/events" className="text-white">Events</Link>
+              <Link to="/events" className="text-white mr-4">Events</Link>
+              <Link to="/help-requests" className="text-white">Help Requests</Link>
             </>
           )}
         </div>
