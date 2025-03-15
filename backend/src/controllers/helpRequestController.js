@@ -1,4 +1,4 @@
-import { createHelpRequest, getHelpRequests, createComment, getComments } from '../models/helpRequestModel.js';
+import { createHelpRequest, getHelpRequests, getHelpRequestById, updateHelpRequest, deleteHelpRequest, createComment, getComments } from '../models/helpRequestModel.js';
 
 const create = async (req, res) => {
   try {
@@ -13,6 +13,33 @@ const list = async (req, res) => {
   try {
     const helpRequests = await getHelpRequests();
     res.status(200).json(helpRequests);
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+};
+
+const get = async (req, res) => {
+  try {
+    const helpRequest = await getHelpRequestById(req.params.helpRequestId);
+    res.status(200).json(helpRequest);
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+};
+
+const update = async (req, res) => {
+  try {
+    const updatedHelpRequest = await updateHelpRequest(req.params.helpRequestId, req.body);
+    res.status(200).json(updatedHelpRequest);
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+};
+
+const remove = async (req, res) => {
+  try {
+    const deletedHelpRequest = await deleteHelpRequest(req.params.helpRequestId);
+    res.status(200).json(deletedHelpRequest);
   } catch (error) {
     res.status(400).json({ message: error.message });
   }
@@ -36,4 +63,4 @@ const listComments = async (req, res) => {
   }
 };
 
-export { create, list, comment, listComments };
+export { create, list, get, update, remove, comment, listComments };
