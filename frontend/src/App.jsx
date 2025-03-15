@@ -7,6 +7,9 @@ import LoginPage from './pages/LoginPage';
 import CreateEventPage from './pages/CreateEventPage';
 import EventListPage from './pages/EventListPage';
 import EventDetailPage from './pages/EventDetailPage';
+import CreateHelpRequestPage from './pages/CreateHelpRequestPage';
+import HelpRequestListPage from './pages/HelpRequestListPage';
+import HelpRequestDetailPage from './pages/HelpRequestDetailPage';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 
@@ -23,6 +26,9 @@ const App = () => {
               <Route path="/events/create" element={<CreateEventPage />} />
               <Route path="/events" element={<EventListPage />} />
               <Route path="/events/:eventId" element={<EventDetailPage />} />
+              <Route path="/help-requests/create" element={<CreateHelpRequestPage />} />
+              <Route path="/help-requests" element={<HelpRequestListPage />} />
+              <Route path="/help-requests/:helpRequestId" element={<HelpRequestDetailPage />} />
             </Routes>
           </main>
           <Footer />
