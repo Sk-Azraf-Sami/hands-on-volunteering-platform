@@ -1,4 +1,4 @@
-import {pool} from '../config/db.js';
+import { pool } from '../config/db.js';
 
 const createEvent = async (event) => {
   const { title, description, date, time, location, category } = event;
@@ -22,4 +22,12 @@ const joinEvent = async (eventId, userId) => {
   return result.rows[0];
 };
 
-export { createEvent, getEvents, joinEvent };
+const getJoinedEvents = async (userId) => {
+  const result = await pool.query(
+    'SELECT event_id FROM event_attendees WHERE user_id = $1',
+    [userId]
+  );
+  return result.rows.map(row => row.event_id);
+};
+
+export { createEvent, getEvents, joinEvent, getJoinedEvents };

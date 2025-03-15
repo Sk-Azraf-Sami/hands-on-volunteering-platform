@@ -1,6 +1,6 @@
-// filepath: /home/azraf-sami/Documents/hands-on-volunteering-platform/frontend/src/slices/authSlice.js
+import { createSlice } from '@reduxjs/toolkit';
 import { apiSlice } from './apiSlice';
-import { REGISTER_API, LOGIN_API } from '../constants';
+import { LOGIN_API, REGISTER_API } from '../constants';
 
 export const authApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
@@ -22,3 +22,29 @@ export const authApiSlice = apiSlice.injectEndpoints({
 });
 
 export const { useRegisterMutation, useLoginMutation } = authApiSlice;
+
+const authSlice = createSlice({
+  name: 'auth',
+  initialState: {
+    token: localStorage.getItem('token') || null,
+    user: JSON.parse(localStorage.getItem('user')) || null,
+  },
+  reducers: {
+    setCredentials: (state, action) => {
+      const { token, user } = action.payload;
+      state.token = token;
+      state.user = user;
+      localStorage.setItem('token', token);
+      localStorage.setItem('user', JSON.stringify(user));
+    },
+    clearCredentials: (state) => {
+      state.token = null;
+      state.user = null;
+      localStorage.removeItem('token');
+      localStorage.removeItem('user');
+    },
+  },
+});
+
+export const { setCredentials, clearCredentials } = authSlice.actions;
+export default authSlice.reducer;
