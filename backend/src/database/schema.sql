@@ -16,7 +16,8 @@ CREATE TABLE events (
   date DATE NOT NULL,
   time TIME NOT NULL,
   location VARCHAR(255),
-  category VARCHAR(255)
+  category VARCHAR(255),
+  team_id INTEGER REFERENCES teams(id)
 );
 
 CREATE TABLE event_attendees (
@@ -56,10 +57,27 @@ CREATE TABLE team_members (
   user_id INTEGER REFERENCES users(id)
 );
 
+CREATE TABLE achievements (
+  id SERIAL PRIMARY KEY,
+  title VARCHAR(255) NOT NULL,
+  description TEXT,
+  date DATE NOT NULL,
+  team_id INTEGER REFERENCES teams(id)
+);
+
 CREATE TABLE volunteer_hours (
   id SERIAL PRIMARY KEY,
   user_id INTEGER REFERENCES users(id),
   event_id INTEGER REFERENCES events(id),
   hours_spent INTEGER NOT NULL,
   verified BOOLEAN NOT NULL
+);
+
+CREATE TABLE invitations (
+  id SERIAL PRIMARY KEY,
+  team_id INTEGER REFERENCES teams(id),
+  sender_id INTEGER REFERENCES users(id),
+  recipient_email VARCHAR(255) NOT NULL,
+  status VARCHAR(50) DEFAULT 'pending',
+  created_at TIMESTAMP DEFAULT NOW()
 );
