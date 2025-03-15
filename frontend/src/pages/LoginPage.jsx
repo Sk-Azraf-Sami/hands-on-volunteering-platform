@@ -1,19 +1,22 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 import { useLoginMutation } from '../slices/authSlice';
+import { setCredentials } from '../slices/authSlice';
 
 const LoginPage = () => {
-  const [credentials, setCredentials] = useState({
+  const [credentials, setCredentialsState] = useState({
     email: '',
     password: '',
   });
 
   const [login, { isLoading, error }] = useLoginMutation();
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setCredentials({
+    setCredentialsState({
       ...credentials,
       [name]: value,
     });
@@ -22,7 +25,8 @@ const LoginPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await login(credentials).unwrap();
+      const userData = await login(credentials).unwrap();
+      dispatch(setCredentials(userData)); // Ensure this line is correct
       console.log('User logged in successfully');
       navigate('/'); // Redirect to home page after successful login
     } catch (err) {
