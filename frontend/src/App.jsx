@@ -10,6 +10,11 @@ import EventDetailPage from './pages/EventDetailPage';
 import CreateHelpRequestPage from './pages/CreateHelpRequestPage';
 import HelpRequestListPage from './pages/HelpRequestListPage';
 import HelpRequestDetailPage from './pages/HelpRequestDetailPage';
+import CreateTeamPage from './pages/CreateTeamPage';
+import TeamListPage from './pages/TeamListPage';
+import TeamDetailPage from './pages/TeamDetailPage';
+import TeamDashboard from './pages/TeamDashboard';
+import LeaderboardPage from './pages/LeaderboardPage';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 
@@ -29,6 +34,11 @@ const App = () => {
               <Route path="/help-requests/create" element={<CreateHelpRequestPage />} />
               <Route path="/help-requests" element={<HelpRequestListPage />} />
               <Route path="/help-requests/:helpRequestId" element={<HelpRequestDetailPage />} />
+              <Route path="/teams/create" element={<CreateTeamPage />} />
+              <Route path="/teams" element={<TeamListPage />} />
+              <Route path="/leaderboard" element={<LeaderboardPage />} /> {/* Move this line up */}
+              <Route path="/teams/:teamId/dashboard" element={<TeamDashboard />} />
+              <Route path="/teams/:teamId" element={<TeamDetailPage />} />
             </Routes>
           </main>
           <Footer />
