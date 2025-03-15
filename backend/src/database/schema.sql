@@ -30,14 +30,16 @@ CREATE TABLE help_requests (
   title VARCHAR(255) NOT NULL,
   description TEXT,
   urgency VARCHAR(50) NOT NULL,
-  user_id INTEGER REFERENCES users(id)
+  user_id INTEGER REFERENCES users(id),
+  created_at TIMESTAMP DEFAULT NOW()
 );
 
 CREATE TABLE comments (
   id SERIAL PRIMARY KEY,
   help_request_id INTEGER REFERENCES help_requests(id),
   user_id INTEGER REFERENCES users(id),
-  text TEXT NOT NULL
+  text TEXT NOT NULL,
+  created_at TIMESTAMP DEFAULT NOW()
 );
 
 CREATE TABLE teams (
