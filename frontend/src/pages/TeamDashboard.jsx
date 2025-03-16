@@ -13,7 +13,7 @@ const TeamDashboard = () => {
   const [acceptInvitation, { isLoading: isAccepting, error: acceptError }] = useAcceptInvitationMutation();
   const [deleteTeam, { isLoading: isDeleting, error: deleteError }] = useDeleteTeamMutation();
   const [updateTeam, { isLoading: isUpdating, error: updateError }] = useUpdateTeamMutation();
-  const userId = useSelector((state) => state.auth.user.id);
+  const user = useSelector((state) => state.auth.user);
   const [recipientEmail, setRecipientEmail] = useState('');
   const [editMode, setEditMode] = useState(false);
   const [teamName, setTeamName] = useState('');
@@ -39,8 +39,8 @@ const TeamDashboard = () => {
 
   if (!team) return <p>No team data available</p>;
 
-  const isMember = team.members ? team.members.some((member) => member.id === userId) : false;
-  const isCreator = team.user_id === userId;
+  const isMember = team.members ? team.members.some((member) => member.id === user?.id) : false;
+  const isCreator = team.user_id === user?.id;
 
   const handleJoin = async () => {
     try {
