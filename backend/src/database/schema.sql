@@ -23,7 +23,7 @@ CREATE TABLE events (
 CREATE TABLE event_attendees (
   id SERIAL PRIMARY KEY,
   event_id INTEGER REFERENCES events(id),
-  user_id INTEGER REFERENCES users(id)
+  user_id UNIQUE INTEGER REFERENCES users(id)
 );
 
 CREATE TABLE help_requests (

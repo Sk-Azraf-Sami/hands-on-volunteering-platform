@@ -1,14 +1,25 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import { useGetEventsQuery, useJoinEventMutation } from '../slices/eventSlice';
+import { useGetEventsQuery, useJoinEventMutation, useWithdrawEventMutation } from '../slices/eventSlice';
 
 const EventListPage = () => {
-  const { data: events, isLoading, error } = useGetEventsQuery();
+  const { data: initialEvents, isLoading, error } = useGetEventsQuery();
   const [joinEvent] = useJoinEventMutation();
+  const [withdrawEvent] = useWithdrawEventMutation();
   const navigate = useNavigate();
   const token = useSelector((state) => state.auth.token);
+  const [events, setEvents] = useState([]);
   const [joinedEvents, setJoinedEvents] = useState([]);
+
+  useEffect(() => {
+    if (initialEvents) {
+      const joinedEventIds = initialEvents.filter(event => event.isJoined).map(event => event.id);
+      setJoinedEvents(joinedEventIds);
+      setEvents(initialEvents);
+      //console.log('Initial events:', initialEvents);
+    }
+  }, [initialEvents]);
 
   const handleJoin = async (eventId) => {
     if (!token) {
@@ -17,11 +28,41 @@ const EventListPage = () => {
     }
 
     try {
-      await joinEvent(eventId).unwrap();
-      setJoinedEvents([...joinedEvents, eventId]); // Add event ID to joined events
+      await joinEvent({ eventId: parseInt(eventId, 10) }).unwrap();
+      setJoinedEvents((prevJoinedEvents) => [...prevJoinedEvents, eventId]); // Add event ID to joined events
+      setEvents((prevEvents) => prevEvents.map(event => 
+        event.id === eventId ? { ...event, isJoined: true, joineduserscount: event.joineduserscount + 1 } : event
+      )); // Update event state
       console.log('Joined event successfully');
     } catch (err) {
       console.error('Failed to join event:', err);
+    }
+  };
+
+  const handleWithdraw = async (eventId) => {
+    try {
+      const parsedEventId = parseInt(eventId, 10);
+      if (isNaN(parsedEventId)) {
+        throw new Error(`Invalid eventId: ${eventId}`);
+      }
+      const payload = { eventId: parsedEventId };
+      console.log('Withdraw payload:', payload);
+      
+      // Log the API endpoint and method
+      console.log('API endpoint: /api/events/withdraw');
+      console.log('HTTP method: POST');
+      console.log()
+      const response = await withdrawEvent(payload).unwrap();
+      console.log('Withdraw response:', response);
+      
+      setJoinedEvents((prevJoinedEvents) => prevJoinedEvents.filter(id => id !== parsedEventId)); // Remove event ID from joined events
+      setEvents((prevEvents) => prevEvents.map(event => 
+        event.id === parsedEventId ? { ...event, isJoined: false, joineduserscount: event.joineduserscount - 1 } : event
+      )); // Update event state
+      console.log('Withdrew from event successfully');
+    } catch (err) {
+      console.error('Failed to withdraw from event:', err);
+      console.error('Error details:', err.data);
     }
   };
 
@@ -36,11 +77,18 @@ const EventListPage = () => {
           <div key={event.id} className="p-4 border border-gray-300 rounded-md">
             <h3 className="text-xl font-bold">{event.title}</h3>
             <p>{event.description}</p>
-            <p>{event.date} at {event.time}</p>
+            <p>{new Date(event.date).toLocaleDateString()} at {event.time}</p>
             <p>Location: {event.location}</p>
             <p>Category: {event.category}</p>
-            {joinedEvents.includes(event.id) ? (
-              <p className="mt-2 text-green-600 font-semibold">You have joined this event</p>
+            <p>Joined Users: {event.joineduserscount}</p>
+            <p>isJoined: {event.isJoined ? 'true' : 'false'}</p>
+            {event.isJoined ? (
+              <button
+                onClick={() => handleWithdraw(event.id)}
+                className="mt-2 py-2 px-4 bg-red-600 text-white font-semibold rounded-md hover:bg-red-700"
+              >
+                Withdraw
+              </button>
             ) : (
               <button
                 onClick={() => handleJoin(event.id)}

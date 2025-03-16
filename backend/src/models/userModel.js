@@ -22,4 +22,10 @@ const getUserPoints = async (userId) => {
   return result.rows[0].points;
 };
 
-export { createUser, getUserByEmail, getUserPoints };
+const getUserById = async (id) => {
+  const result = await pool.query('SELECT * FROM users WHERE id = $1', [id]);
+  return result.rows[0];
+};
+
+
+export { createUser, getUserByEmail, getUserPoints,  getUserById };
