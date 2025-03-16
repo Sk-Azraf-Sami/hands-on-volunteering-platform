@@ -1,7 +1,7 @@
 import React from 'react';
-import { useGetLeaderboardQuery } from '../slices/teamSlice';
+import { useGetLeaderboardQuery } from '../slices/volunteerHoursSlice';
 
-const Leaderboard = () => {
+const LeaderboardPage = () => {
   const { data: leaderboard, isLoading, error } = useGetLeaderboardQuery();
 
   if (isLoading) return <p>Loading...</p>;
@@ -11,11 +11,11 @@ const Leaderboard = () => {
     <div className="max-w-lg mx-auto p-6 bg-white rounded-lg shadow-md">
       <h2 className="text-2xl font-bold text-center mb-6">Leaderboard</h2>
       <ul>
-        {leaderboard.map((team) => (
-          <li key={team.id} className="mb-4">
+        {leaderboard.map((user) => (
+          <li key={user.id} className="mb-4">
             <div className="flex justify-between">
-              <span>{team.name}</span>
-              <span>{team.member_count} members</span>
+              <span>{user.name}</span>
+              <span>{user.total_hours} hours</span>
             </div>
           </li>
         ))}
@@ -24,4 +24,4 @@ const Leaderboard = () => {
   );
 };
 
-export default Leaderboard;
+export default LeaderboardPage;
