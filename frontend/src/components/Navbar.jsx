@@ -1,10 +1,16 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { checkTokenExpiration, logout } from '../slices/authSlice';
 import Logout from './Logout';
 
 const Navbar = () => {
   const token = useSelector((state) => state.auth.token);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(checkTokenExpiration());
+  }, [dispatch]);
 
   return (
     <nav className="bg-blue-600 p-4">
@@ -16,6 +22,7 @@ const Navbar = () => {
               <Link to="/profile" className="text-white mr-4">Profile</Link>
               <Link to="/events" className="text-white mr-4">Events</Link>
               <Link to="/help-requests" className="text-white mr-4">Help Requests</Link>
+              <Link to="/events" className="text-white mr-4">Events</Link>
               <Link to="/teams" className="text-white mr-4">Teams</Link>
               <Logout />
             </>

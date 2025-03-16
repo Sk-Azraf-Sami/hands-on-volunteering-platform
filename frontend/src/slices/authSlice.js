@@ -53,4 +53,15 @@ const authSlice = createSlice({
 });
 
 export const { setCredentials, clearCredentials, logout } = authSlice.actions;
+
+export const checkTokenExpiration = () => (dispatch, getState) => {
+  const token = getState().auth.token;
+  if (token) {
+    const { exp } = JSON.parse(atob(token.split('.')[1]));
+    if (Date.now() >= exp * 1000) {
+      dispatch(logout());
+    }
+  }
+};
+
 export default authSlice.reducer;
