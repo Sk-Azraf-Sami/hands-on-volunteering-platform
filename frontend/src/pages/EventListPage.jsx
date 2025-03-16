@@ -79,7 +79,15 @@ const EventListPage = () => {
 
   return (
     <div className="max-w-4xl mx-auto p-6 bg-white rounded-lg shadow-md">
-      <h2 className="text-2xl font-bold text-center mb-6">Upcoming Events</h2>
+      <div className="flex justify-between items-center mb-6">
+        <h2 className="text-2xl font-bold">Upcoming Events</h2>
+        <button
+          onClick={() => navigate('/events/create')}
+          className="py-2 px-4 bg-green-600 text-white font-semibold rounded-md hover:bg-green-700"
+        >
+          Create Event
+        </button>
+      </div>
       
       <div className="mb-4">
         <label className="block mb-2">Category:</label>
