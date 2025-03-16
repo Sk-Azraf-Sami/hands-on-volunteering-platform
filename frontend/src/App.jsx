@@ -17,6 +17,7 @@ import TeamDashboard from './pages/TeamDashboard';
 import LeaderboardPage from './pages/LeaderboardPage';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
+import LogHoursPage from './pages/LogHoursPage';
 
 const App = () => {
   return (
@@ -39,6 +40,7 @@ const App = () => {
               <Route path="/leaderboard" element={<LeaderboardPage />} /> {/* Move this line up */}
               <Route path="/teams/:teamId/dashboard" element={<TeamDashboard />} />
               <Route path="/teams/:teamId" element={<TeamDetailPage />} />
+              <Route path="/log-hours" element={<LogHoursPage />} />
             </Routes>
           </main>
           <Footer />
