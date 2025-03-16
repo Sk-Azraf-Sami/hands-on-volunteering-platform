@@ -1,5 +1,3 @@
-import {pool} from '../config/db.js';
-
 const logHours = async (hours) => {
   const { userId, eventId, hoursSpent, verified } = hours;
   const result = await pool.query(
@@ -9,11 +7,7 @@ const logHours = async (hours) => {
   return result.rows[0];
 };
 
-const getHoursByUser = async (userId) => {
-  const result = await pool.query('SELECT * FROM volunteer_hours WHERE user_id = $1', [userId]);
-  return result.rows;
-};
-
+// Add a function to verify hours
 const verifyHours = async (hoursId, verified) => {
   const result = await pool.query(
     'UPDATE volunteer_hours SET verified = $1 WHERE id = $2 RETURNING *',
@@ -22,11 +16,26 @@ const verifyHours = async (hoursId, verified) => {
   return result.rows[0];
 };
 
-const getLeaderboard = async () => {
+// Add a function to get hours by user
+const getHoursByUser = async (userId) => {
   const result = await pool.query(
-    'SELECT user_id, SUM(hours_spent) as total_hours FROM volunteer_hours WHERE verified = true GROUP BY user_id ORDER BY total_hours DESC'
+    'SELECT * FROM volunteer_hours WHERE user_id = $1',
+    [userId]
   );
   return result.rows;
 };
 
-export { logHours, getHoursByUser, verifyHours, getLeaderboard };
+// Add a function to get the leaderboard
+const getLeaderboard = async () => {
+  const result = await pool.query(
+    `SELECT user_id, SUM(hours_spent) as total_hours
+     FROM volunteer_hours
+     WHERE verified = true
+     GROUP BY user_id
+     ORDER BY total_hours DESC
+     LIMIT 10`
+  );
+  return result.rows;
+};
+
+export { logHours, verifyHours, getHoursByUser, getLeaderboard };

@@ -14,4 +14,12 @@ const getUserByEmail = async (email) => {
   return result.rows[0];
 };
 
-export { createUser, getUserByEmail };
+const getUserPoints = async (userId) => {
+  const result = await pool.query(
+    'SELECT SUM(hours_spent) * 5 AS points FROM volunteer_hours WHERE user_id = $1 AND verified = true',
+    [userId]
+  );
+  return result.rows[0].points;
+};
+
+export { createUser, getUserByEmail, getUserPoints };
