@@ -14,6 +14,7 @@ const Navbar = () => {
           {token ? (
             <>
               <Link to="/profile" className="text-white mr-4">Profile</Link>
+              <Link to="/events" className="text-white mr-4">Events</Link>
               <Link to="/help-requests" className="text-white mr-4">Help Requests</Link>
               <Link to="/teams" className="text-white mr-4">Teams</Link>
               <Logout />
@@ -24,6 +25,7 @@ const Navbar = () => {
               <Link to="/registration" className="text-white mr-4">Registration</Link>
               <Link to="/events" className="text-white mr-4">Events</Link>
               <Link to="/help-requests" className="text-white">Help Requests</Link>
+              <Link to="/teams" className="text-white mr-4">Teams</Link>
             </>
           )}
         </div>
