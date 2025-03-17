@@ -43,6 +43,10 @@ const TeamDashboard = () => {
   const isCreator = team.user_id === user?.id;
 
   const handleJoin = async () => {
+    if (!user) {
+      navigate('/login');
+      return;
+    }
     try {
       await joinTeam({ teamId }).unwrap();
       refetch();
