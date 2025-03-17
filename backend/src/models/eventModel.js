@@ -11,8 +11,7 @@ const createEvent = async (event) => {
 
 const getEvents = async (userId) => {
   const result = await pool.query(`
-    SELECT 
-      events.*, 
+    SELECT events.*, 
       COUNT(event_attendees.user_id) AS joinedUsersCount,
       CASE 
         WHEN EXISTS (
@@ -24,11 +23,15 @@ const getEvents = async (userId) => {
       END AS "isJoined"
     FROM events
     LEFT JOIN event_attendees ON events.id = event_attendees.event_id
+    LEFT JOIN teams ON events.team_id = teams.id
+    LEFT JOIN team_members ON teams.id = team_members.team_id
+    LEFT JOIN invitations ON teams.id = invitations.team_id
+    WHERE teams.is_private = false
+    OR teams.user_id = $1
+    OR team_members.user_id = $1
+    OR invitations.recipient_email = (SELECT email FROM users WHERE id = $1)
     GROUP BY events.id
   `, [userId]);
-
-  //console.log(`userID: ${userId}`);
-  //console.log(result.rows); // Log the result for debugging
 
   return result.rows;
 };

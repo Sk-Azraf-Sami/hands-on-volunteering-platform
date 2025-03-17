@@ -10,9 +10,6 @@ export const teamApiSlice = apiSlice.injectEndpoints({
         body: data,
       }),
     }),
-    getTeams: builder.query({
-      query: () => `${TEAMS_API}/list`,
-    }),
     getTeam: builder.query({
       query: (teamId) => `${TEAMS_API}/${teamId}`,
     }),
@@ -65,6 +62,12 @@ export const teamApiSlice = apiSlice.injectEndpoints({
         url: `${TEAMS_API}/${teamId}/events`,
         method: 'POST',
         body: event,
+      }),
+    }),
+    getTeams: builder.query({
+      query: () => ({
+        url: `${TEAMS_API}/list`,
+        method: 'GET',
       }),
     }),
   }),

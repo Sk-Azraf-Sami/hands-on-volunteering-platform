@@ -70,12 +70,17 @@ const create = async (req, res) => {
 
 const list = async (req, res) => {
   try {
-    const teams = await getTeams();
+    const userId = req.user ? req.user.id : null; // Allow userId to be null
+
+    // Fetch teams for authenticated users, or return all teams for guests
+    const teams = await getTeams(userId);
+    
     res.status(200).json(teams);
   } catch (error) {
     res.status(400).json({ message: error.message });
   }
 };
+
 
 const get = async (req, res) => {
   try {
@@ -88,6 +93,10 @@ const get = async (req, res) => {
     if (!team) {
       return res.status(404).json({ message: 'Team not found' });
     }
+
+    // Debugging: Print team owner ID and team ID
+    console.log('Team ID:', teamId);
+    console.log('Team Owner ID:', team.user_id);
 
     res.status(200).json(team);
   } catch (error) {

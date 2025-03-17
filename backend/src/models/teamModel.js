@@ -9,10 +9,26 @@ const createTeam = async (team) => {
   return result.rows[0];
 };
 
-const getTeams = async () => {
-  const result = await pool.query('SELECT * FROM teams');
+const getTeams = async (userId) => {
+  const result = await pool.query(`
+    SELECT teams.*
+    FROM teams
+    LEFT JOIN team_members ON teams.id = team_members.team_id
+    LEFT JOIN invitations ON teams.id = invitations.team_id
+    WHERE teams.is_private = false
+    OR teams.user_id = $1
+    OR team_members.user_id = $1
+    OR invitations.recipient_email = (SELECT email FROM users WHERE id = $1)
+    GROUP BY teams.id
+  `, [userId]);
+
+  // Debugging: Print the user ID and the retrieved teams
+  console.log('User ID:', userId);
+  console.log('Retrieved Teams:', result.rows);
+
   return result.rows;
 };
+
 
 const getTeamById = async (teamId) => {
   const teamResult = await pool.query('SELECT * FROM teams WHERE id = $1', [teamId]);
@@ -111,5 +127,7 @@ const getLeaderboard = async () => {
   `);
   return result.rows;
 };
+
+
 
 export { createTeam, getTeams, getTeamById, addMember, removeMember, getTeamMembers, isMember, createInvitation, getInvitationById, acceptInvitation, deleteInvitationsByTeamId, deleteTeam, getLeaderboard };
