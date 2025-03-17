@@ -58,4 +58,38 @@ const getJoinedEvents = async (userId) => {
   return result.rows.map(row => row.event_id);
 };
 
-export { createEvent, getEvents, joinEvent, withdrawEvent, getJoinedEvents };
+const createEventForTeam = async (event, teamId) => {
+  const { title, description, date, time, location, category } = event;
+  const client = await pool.connect();
+  try {
+    await client.query('BEGIN');
+    const eventResult = await client.query(
+      'INSERT INTO events (title, description, date, time, location, category, team_id) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *',
+      [title, description, date, time, location, category, teamId]
+    );
+    const newEvent = eventResult.rows[0];
+
+    const teamMembersResult = await client.query(
+      'SELECT user_id FROM team_members WHERE team_id = $1',
+      [teamId]
+    );
+    const teamMembers = teamMembersResult.rows;
+
+    for (const member of teamMembers) {
+      await client.query(
+        'INSERT INTO event_attendees (event_id, user_id) VALUES ($1, $2)',
+        [newEvent.id, member.user_id]
+      );
+    }
+
+    await client.query('COMMIT');
+    return newEvent;
+  } catch (error) {
+    await client.query('ROLLBACK');
+    throw error;
+  } finally {
+    client.release();
+  }
+};
+
+export { createEvent, getEvents, joinEvent, withdrawEvent, getJoinedEvents, createEventForTeam };

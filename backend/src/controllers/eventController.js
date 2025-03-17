@@ -1,4 +1,4 @@
-import { createEvent, getEvents, joinEvent, withdrawEvent } from '../models/eventModel.js';
+import { createEvent, getEvents, joinEvent, withdrawEvent, createEventForTeam } from '../models/eventModel.js';
 
 const create = async (req, res) => {
   try {
@@ -52,4 +52,14 @@ const withdraw = async (req, res) => {
   }
 };
 
-export { create, list, join, withdraw };
+const createForTeam = async (req, res) => {
+  try {
+    const { teamId } = req.params;
+    const newEvent = await createEventForTeam(req.body, teamId);
+    res.status(201).json(newEvent);
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+};
+
+export { create, list, join, withdraw, createForTeam };

@@ -18,6 +18,7 @@ import LeaderboardPage from './pages/LeaderboardPage';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import LogHoursPage from './pages/LogHoursPage';
+import CreateEventForTeam from './pages/CreateEventForTeam';
 
 const App = () => {
   return (
@@ -41,6 +42,7 @@ const App = () => {
               <Route path="/teams/:teamId/dashboard" element={<TeamDashboard />} />
               <Route path="/teams/:teamId" element={<TeamDetailPage />} />
               <Route path="/log-hours" element={<LogHoursPage />} />
+              <Route path="/teams/:teamId/create-event" element={<CreateEventForTeam />} />
             </Routes>
           </main>
           <Footer />

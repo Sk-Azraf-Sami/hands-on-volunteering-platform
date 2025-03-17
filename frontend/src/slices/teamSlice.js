@@ -60,6 +60,13 @@ export const teamApiSlice = apiSlice.injectEndpoints({
     getLeaderboard: builder.query({
       query: () => `${TEAMS_API}/leaderboard`,
     }),
+    createEventForTeam: builder.mutation({
+      query: ({ teamId, event }) => ({
+        url: `${TEAMS_API}/${teamId}/events`,
+        method: 'POST',
+        body: event,
+      }),
+    }),
   }),
 });
 
@@ -73,5 +80,6 @@ export const {
   useAcceptInvitationMutation, 
   useDeleteTeamMutation, 
   useUpdateTeamMutation, 
-  useGetLeaderboardQuery 
+  useGetLeaderboardQuery,
+  useCreateEventForTeamMutation
 } = teamApiSlice;

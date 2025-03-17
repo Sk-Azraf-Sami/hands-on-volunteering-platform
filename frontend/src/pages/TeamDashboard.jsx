@@ -113,15 +113,21 @@ const TeamDashboard = () => {
         )}
       </ul>
       <h3 className="text-xl font-bold mt-6">Events</h3>
-      <ul>
+      <div className="grid grid-cols-1 gap-4">
         {team.events && team.events.length > 0 ? (
           team.events.map((event) => (
-            <li key={event.id}>{event.title}</li>
+            <div key={event.id} className="p-4 border border-gray-300 rounded-md">
+              <h4 className="text-lg font-bold">{event.title}</h4>
+              <p>{event.description}</p>
+              <p>{event.date} at {event.time}</p>
+              <p>{event.location}</p>
+              <p>Category: {event.category}</p>
+            </div>
           ))
         ) : (
           <p>No events available</p>
         )}
-      </ul>
+      </div>
       <h3 className="text-xl font-bold mt-6">Achievements</h3>
       <ul>
         {team.achievements && team.achievements.length > 0 ? (
@@ -226,6 +232,16 @@ const TeamDashboard = () => {
           </button>
           {updateError && <p className="text-red-500">{updateError.data?.message || updateError.error}</p>}
         </form>
+      )}
+      {isCreator && (
+        <div className="mt-6">
+          <button
+            onClick={() => navigate(`/teams/${teamId}/create-event`)}
+            className="mt-4 py-2 px-4 bg-blue-600 text-white font-semibold rounded-md hover:bg-blue-700"
+          >
+            Create Event
+          </button>
+        </div>
       )}
     </div>
   );
