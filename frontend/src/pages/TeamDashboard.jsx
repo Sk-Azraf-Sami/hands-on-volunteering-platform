@@ -69,9 +69,9 @@ const TeamDashboard = () => {
   const handleSendInvitation = async (e) => {
     e.preventDefault();
     try {
-      await sendInvitation({ teamId, recipientEmail }).unwrap();
+      const response = await sendInvitation({ teamId, recipientEmail }).unwrap();
       setRecipientEmail('');
-      alert('Invitation sent successfully');
+      alert(response.message);
     } catch (err) {
       console.error('Failed to send invitation:', err);
     }

@@ -1,4 +1,63 @@
 import { createTeam, getTeams, getTeamById, addMember, removeMember, getTeamMembers, isMember, createInvitation, acceptInvitation as acceptInvitationModel, deleteTeam as deleteTeamModel, deleteInvitationsByTeamId, getLeaderboard as getLeaderboardModel } from '../models/teamModel.js';
+import nodemailer from 'nodemailer';
+import { getUserByEmail } from '../models/userModel.js';
+
+
+const sendInvitation = async (req, res) => {
+  try {
+    const { teamId, recipientEmail } = req.body;
+    const senderId = req.user.id;
+
+    const team = await getTeamById(teamId);
+    if (!team) {
+      return res.status(404).json({ message: 'Team not found' });
+    }
+
+    if (!team.is_private) {
+      return res.status(400).json({ message: 'Invitations can only be sent for private teams' });
+    }
+
+    if (team.user_id !== senderId) {
+      return res.status(403).json({ message: 'Only the team creator can send invitations' });
+    }
+
+    const recipient = await getUserByEmail(recipientEmail);
+    if (!recipient) {
+      return res.status(404).json({ message: 'User with this email not found' });
+    }
+
+    const invitation = await createInvitation(teamId, senderId, recipientEmail);
+
+    // Send email with Nodemailer
+    const transporter = nodemailer.createTransport({
+      service: 'gmail',
+      auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS,
+      },
+    });
+
+    const mailOptions = {
+      from: process.env.EMAIL_USER,
+      to: recipientEmail,
+      subject: 'Team Invitation',
+      text: `You have been invited to join the team ${team.name}. Click the link to join: http://localhost:5173/teams/${teamId}/accept-invitation?invitationId=${invitation.id}`,
+    };
+
+    transporter.sendMail(mailOptions, (error, info) => {
+      if (error) {
+        console.error('Error sending email:', error); // Log the error
+        return res.status(500).json({ message: 'Error sending email', error });
+      } else {
+        res.status(201).json({ message: 'Invitation sent successfully', invitation });
+      }
+    });
+  } catch (error) {
+    console.error('Error in sendInvitation:', error); // Log the error
+    res.status(400).json({ message: error.message });
+  }
+};
+
 
 const create = async (req, res) => {
   try {
@@ -93,30 +152,6 @@ const listMembers = async (req, res) => {
   }
 };
 
-const sendInvitation = async (req, res) => {
-  try {
-    const { teamId, recipientEmail } = req.body;
-    const senderId = req.user.id;
-
-    const team = await getTeamById(teamId);
-    if (!team) {
-      return res.status(404).json({ message: 'Team not found' });
-    }
-
-    if (!team.is_private) {
-      return res.status(400).json({ message: 'Invitations can only be sent for private teams' });
-    }
-
-    if (team.user_id !== senderId) {
-      return res.status(403).json({ message: 'Only the team creator can send invitations' });
-    }
-
-    const invitation = await createInvitation(teamId, senderId, recipientEmail);
-    res.status(201).json(invitation);
-  } catch (error) {
-    res.status(400).json({ message: error.message });
-  }
-};
 
 const acceptInvitation = async (req, res) => {
   try {
