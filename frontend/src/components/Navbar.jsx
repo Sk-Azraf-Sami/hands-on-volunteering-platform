@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { checkTokenExpiration, logout } from '../slices/authSlice';
 import Logout from './Logout';
+import '@fortawesome/fontawesome-free/css/all.min.css';
 
 const Navbar = () => {
   const token = useSelector((state) => state.auth.token);
@@ -13,25 +14,36 @@ const Navbar = () => {
   }, [dispatch]);
 
   return (
-    <nav className="bg-blue-600 p-4">
+    <nav className="bg-gradient-to-r from-blue-500 to-purple-600 p-4 shadow-lg">
       <div className="container mx-auto flex justify-between items-center">
-        <Link to="/" className="text-white text-lg font-semibold">HandsOn</Link>
-        <div>
+        <Link to="/" className="text-white text-2xl font-bold transition duration-300 hover:text-gray-300">
+          <i className="fas fa-hands-helping mr-2"></i>HandsOn
+        </Link>
+        <div className="flex space-x-4">
+          <Link to="/events" className="text-white transition duration-300 hover:text-gray-300">
+            <i className="fas fa-calendar-alt mr-1"></i>Events
+          </Link>
+          <Link to="/help-requests" className="text-white transition duration-300 hover:text-gray-300">
+            <i className="fas fa-hands mr-1"></i>Help Requests
+          </Link>
+          <Link to="/teams" className="text-white transition duration-300 hover:text-gray-300">
+            <i className="fas fa-users mr-1"></i>Teams
+          </Link>
           {token ? (
             <>
-              <Link to="/profile" className="text-white mr-4">Profile</Link>
-              <Link to="/events" className="text-white mr-4">Events</Link>
-              <Link to="/help-requests" className="text-white mr-4">Help Requests</Link>
-              <Link to="/teams" className="text-white mr-4">Teams</Link>
+              <Link to="/profile" className="text-white transition duration-300 hover:text-gray-300">
+                <i className="fas fa-user mr-1"></i>Profile
+              </Link>
               <Logout />
             </>
           ) : (
             <>
-              <Link to="/login" className="text-white mr-4">Login</Link>
-              <Link to="/registration" className="text-white mr-4">Registration</Link>
-              <Link to="/events" className="text-white mr-4">Events</Link>
-              <Link to="/help-requests" className="text-white">Help Requests</Link>
-              <Link to="/teams" className="text-white mr-4">Teams</Link>
+              <Link to="/login" className="text-white transition duration-300 hover:text-gray-300">
+                <i className="fas fa-sign-in-alt mr-1"></i>Login
+              </Link>
+              <Link to="/registration" className="text-white transition duration-300 hover:text-gray-300">
+                <i className="fas fa-user-plus mr-1"></i>Registration
+              </Link>
             </>
           )}
         </div>
