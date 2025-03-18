@@ -19,6 +19,7 @@ import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import LogHoursPage from './pages/LogHoursPage';
 import CreateEventForTeam from './pages/CreateEventForTeam';
+import ProfilePage from './pages/ProfilePage'; // Import the ProfilePage component
 
 const App = () => {
   return (
@@ -38,11 +39,12 @@ const App = () => {
               <Route path="/help-requests/:helpRequestId" element={<HelpRequestDetailPage />} />
               <Route path="/teams/create" element={<CreateTeamPage />} />
               <Route path="/teams" element={<TeamListPage />} />
-              <Route path="/leaderboard" element={<LeaderboardPage />} /> {/* Move this line up */}
+              <Route path="/leaderboard" element={<LeaderboardPage />} />
               <Route path="/teams/:teamId/dashboard" element={<TeamDashboard />} />
               <Route path="/teams/:teamId" element={<TeamDetailPage />} />
               <Route path="/log-hours" element={<LogHoursPage />} />
               <Route path="/teams/:teamId/create-event" element={<CreateEventForTeam />} />
+              <Route path="/profile" element={<ProfilePage />} /> {/* Add the ProfilePage route */}
             </Routes>
           </main>
           <Footer />

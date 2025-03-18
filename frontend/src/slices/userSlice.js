@@ -1,4 +1,3 @@
-// filepath: /home/azraf-sami/Documents/hands-on-volunteering-platform/frontend/src/slices/userSlice.js
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 import { REGISTER_API, LOGIN_API } from '../constants';
@@ -15,6 +14,15 @@ export const registerUser = createAsyncThunk('user/register', async (userData, {
 export const loginUser = createAsyncThunk('user/login', async (credentials, { rejectWithValue }) => {
   try {
     const response = await axios.post(LOGIN_API, credentials);
+    return response.data;
+  } catch (error) {
+    return rejectWithValue(error.response.data);
+  }
+});
+
+export const updateUser = createAsyncThunk('user/update', async (userData, { rejectWithValue }) => {
+  try {
+    const response = await axios.put(`/api/users/${userData.id}`, userData);
     return response.data;
   } catch (error) {
     return rejectWithValue(error.response.data);
@@ -59,6 +67,18 @@ const userSlice = createSlice({
         state.token = action.payload.token;
       })
       .addCase(loginUser.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+      .addCase(updateUser.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(updateUser.fulfilled, (state, action) => {
+        state.loading = false;
+        state.user = action.payload;
+      })
+      .addCase(updateUser.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       });
