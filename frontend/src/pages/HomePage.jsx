@@ -1,17 +1,13 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import '@fortawesome/fontawesome-free/css/all.min.css';
+import Header from '../components/Header';
 
 const HomePage = () => {
   const navigate = useNavigate();
   return (
-    <div className="min-h-screen bg-gray-100">
-      <header className="bg-gradient-to-r from-blue-500 to-purple-600 p-6 text-white text-center mt-16">
-        <h1 className="text-4xl font-bold">
-          <i className="fas fa-hands-helping mr-2"></i> Welcome to HandsOn
-        </h1>
-        <p className="mt-2 text-lg">Connecting volunteers with those in need</p>
-      </header>
+    <div className="min-h-screen">
+     <Header/>
       <main className="container mx-auto p-6">
         <section className="mb-12">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -58,7 +54,7 @@ const HomePage = () => {
               <p className="text-gray-700">"The best of people are those that bring most benefit to the rest of mankind." - Prophet Muhammad (PBUH)</p>
             </div>
             <div className="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300">
-              <i className="fas fa-cross text-4xl text-blue-500 mb-4"></i>
+              <i className="fas fa-cross text-4xl text-violet-500 mb-4"></i>
               <h3 className="text-xl font-bold mb-2">Christianity</h3>
               <p className="text-gray-700">"Each of you should use whatever gift you have received to serve others, as faithful stewards of God's grace in its various forms." - 1 Peter 4:10</p>
             </div>
@@ -104,7 +100,7 @@ const HomePage = () => {
           <p className="text-gray-700 mb-6">Join us today and start making a difference in your community.</p>
           <button
             onClick={() => navigate('/login')}
-            className="bg-blue-500 text-white px-6 py-3 rounded-lg shadow-lg hover:bg-blue-600 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 hover:scale-105"
+            className="bg-violet-500 text-white px-6 py-3 rounded-lg shadow-lg hover:bg-violet-600 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 hover:scale-105"
           >
             Join Now
           </button>

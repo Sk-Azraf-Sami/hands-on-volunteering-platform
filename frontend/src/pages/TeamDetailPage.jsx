@@ -38,7 +38,7 @@ const TeamDetailPage = () => {
       {!isMember && (
         <button
           onClick={handleJoin}
-          className="mt-4 py-2 px-4 bg-blue-600 text-white font-semibold rounded-md hover:bg-blue-700"
+          className="mt-4 py-2 px-4 bg-violet-600 text-white font-semibold rounded-md hover:bg-violet-900"
           disabled={isJoining}
         >
           {isJoining ? 'Joining...' : 'Join Team'}

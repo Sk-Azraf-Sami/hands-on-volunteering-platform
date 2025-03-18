@@ -53,7 +53,7 @@ const LogHoursPage = () => {
             className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
           />
         </div>
-        <button type="submit" className="w-full py-2 px-4 bg-blue-600 text-white font-semibold rounded-md hover:bg-blue-700">
+        <button type="submit" className="w-full py-2 px-4 bg-violet-600 text-white font-semibold rounded-md hover:bg-violet-900">
           Log Hours
         </button>
         {isLoading && <p>Loading...</p>}
