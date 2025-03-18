@@ -1,4 +1,4 @@
-import {pool} from '../config/db.js';
+import { pool } from '../config/db.js';
 
 const createUser = async (user) => {
   const { email, password, name, skills, causes } = user;
@@ -27,5 +27,13 @@ const getUserById = async (id) => {
   return result.rows[0];
 };
 
+const updateUserById = async (userId, user) => {
+  const { email, name, skills, causes } = user;
+  const result = await pool.query(
+    'UPDATE users SET email = $1, name = $2, skills = $3, causes = $4 WHERE id = $5 RETURNING *',
+    [email, name, skills, causes, userId]
+  );
+  return result.rows[0];
+};
 
-export { createUser, getUserByEmail, getUserPoints,  getUserById };
+export { createUser, getUserByEmail, getUserPoints, getUserById, updateUserById };

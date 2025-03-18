@@ -1,33 +1,39 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import axios from 'axios';
-import { REGISTER_API, LOGIN_API } from '../constants';
+import { createSlice } from '@reduxjs/toolkit';
+import { apiSlice } from './apiSlice';
+import { REGISTER_API, LOGIN_API, API_BASE_URL } from '../constants';
 
-export const registerUser = createAsyncThunk('user/register', async (userData, { rejectWithValue }) => {
-  try {
-    const response = await axios.post(REGISTER_API, userData);
-    return response.data;
-  } catch (error) {
-    return rejectWithValue(error.response.data);
-  }
+export const userApiSlice = apiSlice.injectEndpoints({
+  endpoints: (builder) => ({
+    registerUser: builder.mutation({
+      query: (userData) => ({
+        url: REGISTER_API,
+        method: 'POST',
+        body: userData,
+      }),
+    }),
+    loginUser: builder.mutation({
+      query: (credentials) => ({
+        url: LOGIN_API,
+        method: 'POST',
+        body: credentials,
+      }),
+    }),
+    updateUser: builder.mutation({
+      query: (userData) => {
+        const url = `${API_BASE_URL}/users/${userData.id}`; // Corrected URL
+        console.log('Update User URL:', url); // Log the URL
+        console.log('Update User Data:', userData); // Log the data being sent
+        return {
+          url,
+          method: 'PUT',
+          body: userData,
+        };
+      },
+    }),
+  }),
 });
 
-export const loginUser = createAsyncThunk('user/login', async (credentials, { rejectWithValue }) => {
-  try {
-    const response = await axios.post(LOGIN_API, credentials);
-    return response.data;
-  } catch (error) {
-    return rejectWithValue(error.response.data);
-  }
-});
-
-export const updateUser = createAsyncThunk('user/update', async (userData, { rejectWithValue }) => {
-  try {
-    const response = await axios.put(`/api/users/${userData.id}`, userData);
-    return response.data;
-  } catch (error) {
-    return rejectWithValue(error.response.data);
-  }
-});
+export const { useRegisterUserMutation, useLoginUserMutation, useUpdateUserMutation } = userApiSlice;
 
 const userSlice = createSlice({
   name: 'user',
@@ -45,40 +51,15 @@ const userSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(registerUser.pending, (state) => {
+      .addMatcher(userApiSlice.endpoints.updateUser.matchPending, (state) => {
         state.loading = true;
         state.error = null;
       })
-      .addCase(registerUser.fulfilled, (state, action) => {
+      .addMatcher(userApiSlice.endpoints.updateUser.matchFulfilled, (state, action) => {
         state.loading = false;
         state.user = action.payload;
       })
-      .addCase(registerUser.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.payload;
-      })
-      .addCase(loginUser.pending, (state) => {
-        state.loading = true;
-        state.error = null;
-      })
-      .addCase(loginUser.fulfilled, (state, action) => {
-        state.loading = false;
-        state.user = action.payload.user;
-        state.token = action.payload.token;
-      })
-      .addCase(loginUser.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.payload;
-      })
-      .addCase(updateUser.pending, (state) => {
-        state.loading = true;
-        state.error = null;
-      })
-      .addCase(updateUser.fulfilled, (state, action) => {
-        state.loading = false;
-        state.user = action.payload;
-      })
-      .addCase(updateUser.rejected, (state, action) => {
+      .addMatcher(userApiSlice.endpoints.updateUser.matchRejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       });

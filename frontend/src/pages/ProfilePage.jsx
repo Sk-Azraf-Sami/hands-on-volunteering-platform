@@ -1,21 +1,70 @@
 import React, { useState, useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { useGetTeamsQuery } from '../slices/teamSlice';
 import { useGetEventsQuery } from '../slices/eventSlice';
-import { updateUser } from '../slices/userSlice';
+import { useUpdateUserMutation } from '../slices/userSlice';
+import Select from 'react-select';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 
+const skillsOptions = [
+  { value: 'communication', label: 'Communication' },
+  { value: 'leadership', label: 'Leadership' },
+  { value: 'teamwork', label: 'Teamwork' },
+  { value: 'problem-solving', label: 'Problem Solving' },
+  { value: 'technical', label: 'Technical' },
+  { value: 'management', label: 'Management' },
+  { value: 'design', label: 'Design' },
+  { value: 'other', label: 'Other' },
+];
+
+const causesOptions = [
+  { value: 'environment', label: 'Environment' },
+  { value: 'education', label: 'Education' },
+  { value: 'health', label: 'Health' },
+  { value: 'animal-welfare', label: 'Animal Welfare' },
+  { value: 'community', label: 'Community' },
+  { value: 'human-rights', label: 'Human Rights' },
+  { value: 'arts-culture', label: 'Arts & Culture' },
+  { value: 'other', label: 'Other' },
+];
+
 const ProfilePage = () => {
-  const dispatch = useDispatch();
   const navigate = useNavigate();
   const user = useSelector((state) => state.auth.user);
-  const [userInfo, setUserInfo] = useState(user);
+  const [userInfo, setUserInfo] = useState({
+    ...user,
+    skills: [],
+    causes: [],
+  });
   const { data: teams, isLoading: isLoadingTeams } = useGetTeamsQuery();
   const { data: events, isLoading: isLoadingEvents } = useGetEventsQuery();
+  const [updateUser] = useUpdateUserMutation();
 
   useEffect(() => {
-    setUserInfo(user);
+    if (user) {
+      try {
+        console.log('Raw skills:', user.skills);
+        console.log('Raw causes:', user.causes);
+
+        const correctedSkills = user.skills.replace(/^{/, '[').replace(/}$/, ']').replace(/"/g, '"');
+        const correctedCauses = user.causes.replace(/^{/, '[').replace(/}$/, ']').replace(/"/g, '"');
+
+        const parsedSkills = JSON.parse(correctedSkills);
+        const parsedCauses = JSON.parse(correctedCauses);
+
+        console.log('Parsed skills:', parsedSkills);
+        console.log('Parsed causes:', parsedCauses);
+
+        setUserInfo({
+          ...user,
+          skills: Array.isArray(parsedSkills) ? parsedSkills.map(skill => skillsOptions.find(option => option.value === skill)) : [],
+          causes: Array.isArray(parsedCauses) ? parsedCauses.map(cause => causesOptions.find(option => option.value === cause)) : [],
+        });
+      } catch (error) {
+        console.error('Error parsing skills or causes:', error);
+      }
+    }
   }, [user]);
 
   const handleChange = (e) => {
@@ -26,13 +75,39 @@ const ProfilePage = () => {
     });
   };
 
+  const handleSkillsChange = (selectedOptions) => {
+    setUserInfo({
+      ...userInfo,
+      skills: selectedOptions,
+    });
+  };
+
+  const handleCausesChange = (selectedOptions) => {
+    setUserInfo({
+      ...userInfo,
+      causes: selectedOptions,
+    });
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await dispatch(updateUser(userInfo)).unwrap();
-      alert('Profile updated successfully');
+      const updatedUserInfo = {
+        ...userInfo,
+        skills: Array.isArray(userInfo.skills) ? userInfo.skills.map(skill => skill.value) : [],
+        causes: Array.isArray(userInfo.causes) ? userInfo.causes.map(cause => cause.value) : [],
+      };
+  
+      const response = await updateUser(updatedUserInfo).unwrap();
+      console.log('API Response:', response);
+
+      if (response) { // Ensure response is not undefined
+        alert('Profile updated successfully');
+      } else {
+        throw new Error('Unexpected response structure');
+      }
     } catch (err) {
-      console.error('Failed to update profile:', err);
+      console.error('Failed to update profile:', err.message);
     }
   };
 
@@ -73,22 +148,26 @@ const ProfilePage = () => {
           </div>
           <div>
             <label className="block text-sm font-medium text-gray-700">Skills:</label>
-            <input
-              type="text"
+            <Select
+              isMulti
               name="skills"
+              options={skillsOptions}
+              className="mt-1 block w-full"
+              classNamePrefix="select"
+              onChange={handleSkillsChange}
               value={userInfo.skills}
-              onChange={handleChange}
-              className="mt-1 block w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-violet-500"
             />
           </div>
           <div>
             <label className="block text-sm font-medium text-gray-700">Causes:</label>
-            <input
-              type="text"
+            <Select
+              isMulti
               name="causes"
+              options={causesOptions}
+              className="mt-1 block w-full"
+              classNamePrefix="select"
+              onChange={handleCausesChange}
               value={userInfo.causes}
-              onChange={handleChange}
-              className="mt-1 block w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-violet-500"
             />
           </div>
           <button type="submit" className="w-full py-3 px-4 bg-violet-600 text-white font-semibold rounded-md hover:bg-violet-900 transition duration-300">

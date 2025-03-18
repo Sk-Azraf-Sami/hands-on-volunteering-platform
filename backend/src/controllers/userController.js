@@ -1,4 +1,5 @@
 import { registerUser, loginUser } from '../services/authService.js';
+import { updateUserById } from '../models/userModel.js'; // Import the update function
 
 const register = async (req, res) => {
   try {
@@ -19,4 +20,13 @@ const login = async (req, res) => {
   }
 };
 
-export { register, login };
+const updateUser = async (req, res) => {
+  try {
+    const updatedUser = await updateUserById(req.params.userId, req.body);
+    res.status(200).json(updatedUser);
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+};
+
+export { register, login, updateUser };
