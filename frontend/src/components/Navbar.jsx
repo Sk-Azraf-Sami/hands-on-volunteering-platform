@@ -14,7 +14,7 @@ const Navbar = () => {
   }, [dispatch]);
 
   return (
-    <nav className="bg-gradient-to-r from-blue-500 to-purple-600 p-4 shadow-lg">
+    <nav className="fixed top-0 left-0 right-0 bg-gradient-to-r from-blue-500 to-purple-600 p-4 shadow-lg z-50">
       <div className="container mx-auto flex justify-between items-center">
         <Link to="/" className="text-white text-2xl font-bold transition duration-300 hover:text-gray-300">
           <i className="fas fa-hands-helping mr-2"></i>HandsOn

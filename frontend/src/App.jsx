@@ -19,7 +19,10 @@ import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import LogHoursPage from './pages/LogHoursPage';
 import CreateEventForTeam from './pages/CreateEventForTeam';
-import ProfilePage from './pages/ProfilePage'; // Import the ProfilePage component
+import ProfilePage from './pages/ProfilePage';
+import '@fortawesome/fontawesome-free/css/all.min.css';
+import HomePage from './pages/HomePage';
+
 
 const App = () => {
   return (
@@ -29,6 +32,7 @@ const App = () => {
           <Navbar />
           <main className="flex-grow">
             <Routes>
+              <Route path="/" element={<HomePage />} />
               <Route path="/registration" element={<RegPage />} />
               <Route path="/login" element={<LoginPage />} />
               <Route path="/events/create" element={<CreateEventPage />} />
@@ -44,7 +48,7 @@ const App = () => {
               <Route path="/teams/:teamId" element={<TeamDetailPage />} />
               <Route path="/log-hours" element={<LogHoursPage />} />
               <Route path="/teams/:teamId/create-event" element={<CreateEventForTeam />} />
-              <Route path="/profile" element={<ProfilePage />} /> {/* Add the ProfilePage route */}
+              <Route path="/profile" element={<ProfilePage />} />
             </Routes>
           </main>
           <Footer />
