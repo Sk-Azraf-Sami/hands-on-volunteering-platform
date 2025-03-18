@@ -36,6 +36,7 @@ const ProfilePage = () => {
     ...user,
     skills: [],
     causes: [],
+    newPassword: '',
   });
   const { data: teams, isLoading: isLoadingTeams } = useGetTeamsQuery();
   const { data: events, isLoading: isLoadingEvents } = useGetEventsQuery();
@@ -60,6 +61,7 @@ const ProfilePage = () => {
           ...user,
           skills: Array.isArray(parsedSkills) ? parsedSkills.map(skill => skillsOptions.find(option => option.value === skill)) : [],
           causes: Array.isArray(parsedCauses) ? parsedCauses.map(cause => causesOptions.find(option => option.value === cause)) : [],
+          newPassword: '',
         });
       } catch (error) {
         console.error('Error parsing skills or causes:', error);
@@ -97,7 +99,7 @@ const ProfilePage = () => {
         skills: Array.isArray(userInfo.skills) ? userInfo.skills.map(skill => skill.value) : [],
         causes: Array.isArray(userInfo.causes) ? userInfo.causes.map(cause => cause.value) : [],
       };
-  
+
       const response = await updateUser(updatedUserInfo).unwrap();
       console.log('API Response:', response);
 
@@ -143,6 +145,16 @@ const ProfilePage = () => {
               value={userInfo.name}
               onChange={handleChange}
               required
+              className="mt-1 block w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-violet-500"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700">New Password:</label>
+            <input
+              type="password"
+              name="newPassword"
+              value={userInfo.newPassword}
+              onChange={handleChange}
               className="mt-1 block w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-violet-500"
             />
           </div>

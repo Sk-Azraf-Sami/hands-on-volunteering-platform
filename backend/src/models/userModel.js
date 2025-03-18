@@ -28,12 +28,12 @@ const getUserById = async (id) => {
 };
 
 const updateUserById = async (userId, user) => {
-  const { email, name, skills, causes } = user;
+  const { email, name, skills, causes, newPassword } = user;
   const result = await pool.query(
-    'UPDATE users SET email = $1, name = $2, skills = $3, causes = $4 WHERE id = $5 RETURNING *',
-    [email, name, skills, causes, userId]
+    'UPDATE users SET email = $1, name = $2, skills = $3, causes = $4, password = COALESCE($5, password) WHERE id = $6 RETURNING *',
+    [email, name, skills, causes, newPassword, userId]
   );
   return result.rows[0];
 };
 
-export { createUser, getUserByEmail, getUserPoints, getUserById, updateUserById };
+export { createUser, getUserByEmail, getUserPoints, getUserById, updateUserById }; 
