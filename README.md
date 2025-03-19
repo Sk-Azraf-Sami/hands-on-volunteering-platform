@@ -45,11 +45,11 @@ TBD
 - User Registration & Profile Management
 - Discover & Join Volunteer Events
 - Community Help Requests
-- Form Teams & Group Initiatives
+- Form Teams(private and public)
 - Impact Tracking & Social Recognition
 
 ## Database Schema
-
+![Database Diagram](backend/src/database/database-diagram.png)
 
 
 ## Setup Instructions
@@ -68,22 +68,24 @@ TBD
    cd backend
    npm install
    ```
-4. Set up the database by running the SQL scripts in the `database` directory.
-5. Start the backend server:
+4. Set up the database:
+   - Copy script from [here](backend/src/database/schema.sql) and paste to `PostgreSQL` terminal
+6. Start the backend server:
    ```
    npm run dev
    ```
-6. Navigate to the frontend directory and install dependencies:
+7. Navigate to the frontend directory and install dependencies:
    ```
    cd ../frontend
    npm install
    ```
-7. Start the frontend application:
+8. Start the frontend application:
    ```
    npm run dev
    ```
 
 ## API Documentation
+[Ref: [Postman Collection](backend/postman/HandsOn.postman_collection.json)] 
 
 ### User Authentication
 
@@ -153,14 +155,16 @@ TBD
 
 - **Create Help Request**: `POST /api/help-requests`
   - **Request Body:**
+    
     ```json
-   {
+    {
       "title": "Justice for Achiya",
       "description": "Protest",
       "location": "Mirpur",
       "category": "Community Assistance"
-    } 
+    }
     ```
+    
 - **List Help Requests**: `GET /api/help-requests/list`
 
 ### Volunteer Hours
