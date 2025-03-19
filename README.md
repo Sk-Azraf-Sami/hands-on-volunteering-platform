@@ -1,4 +1,11 @@
 # HandsOn - Community Volunteering Platform
+![GitHub last commit](https://img.shields.io/github/last-commit/Sk-Azraf-Sami/hands-on-volunteering-platform)
+![GitHub repo size](https://img.shields.io/github/repo-size/Sk-Azraf-Sami/hands-on-volunteering-platform)
+![GitHub contributors](https://img.shields.io/github/contributors/Sk-Azraf-Sami/hands-on-volunteering-platform)
+![GitHub issues](https://img.shields.io/github/issues/Sk-Azraf-Sami/hands-on-volunteering-platform)
+![GitHub pull requests](https://img.shields.io/github/issues-pr/Sk-Azraf-Sami/hands-on-volunteering-platform)
+![GitHub top language](https://img.shields.io/github/languages/top/Sk-Azraf-Sami/hands-on-volunteering-platform)
+![GitHub license](https://img.shields.io/github/license/Sk-Azraf-Sami/hands-on-volunteering-platform)
 
 ## Table of Contents
 
