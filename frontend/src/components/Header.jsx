@@ -100,8 +100,7 @@ const Header = () => {
                         <span style={styles.highlight}>
                             HandsOn Volunteering Platform
                         </span>
-                        , our commitment revolves around the noble cause of preserving lives
-                        through voluntary blood donation.
+                        , Bringing people together to create meaningful change, one act of kindness at a time. Join us in making a lasting impact on communities worldwide!
                     </h1>
                     <div style={styles.divButtonStyle}>
                         <Link to="/login" className="text-decoration-none">
