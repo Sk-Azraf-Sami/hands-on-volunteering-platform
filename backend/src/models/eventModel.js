@@ -30,6 +30,7 @@ const getEvents = async (userId) => {
     OR teams.user_id = $1
     OR team_members.user_id = $1
     OR invitations.recipient_email = (SELECT email FROM users WHERE id = $1)
+    OR events.team_id IS NULL
     GROUP BY events.id
   `, [userId]);
 
